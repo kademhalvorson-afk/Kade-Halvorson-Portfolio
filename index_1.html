@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kade Halvorson — Presentation Designer & UI Specialist</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --cream: #F5F0E8;
+  --warm-white: #FAF8F4;
+  --dark: #18150F;
+  --dark-mid: #252118;
+  --accent: #B8622D;
+  --accent-hover: #D07A3E;
+  --sage: #7A8B6F;
+  --text: #18150F;
+  --text-2: #5C5549;
+  --text-3: #8E8579;
+  --border: #DDD7CD;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'Sora', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); background: var(--cream); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 0 clamp(24px,4vw,56px); height: 68px; display: flex; align-items: center; justify-content: space-between; background: rgba(24,21,15,0.96); backdrop-filter: blur(16px); transition: all 0.5s cubic-bezier(0.16,1,0.3,1); }
+nav.scrolled { background: rgba(245,240,232,0.97); box-shadow: 0 1px 0 var(--border); }
+.nav-logo { font-family: var(--serif); font-size: 1.2rem; font-weight: 600; color: #fff; transition: color 0.4s; }
+nav.scrolled .nav-logo { color: var(--dark); }
+.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links a { text-decoration: none; font-size: 0.73rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.45); transition: color 0.3s; }
+.nav-links a:hover { color: #fff; }
+nav.scrolled .nav-links a { color: var(--text-3); }
+nav.scrolled .nav-links a:hover { color: var(--dark); }
+.nav-cta { padding: 8px 22px; background: var(--accent); border: none; border-radius: 6px; font-family: var(--sans); font-size: 0.73rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #fff; text-decoration: none; transition: background 0.3s; }
+.nav-cta:hover { background: var(--accent-hover); }
+.nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 8px; }
+.nav-toggle span { display: block; width: 20px; height: 1.5px; background: #fff; margin: 5px 0; transition: all 0.3s; }
+nav.scrolled .nav-toggle span { background: var(--dark); }
+
+.hero { min-height: 100vh; background: var(--dark); display: flex; align-items: center; padding: 100px clamp(24px,4vw,56px) 80px; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 70% 50% at 75% 35%, rgba(184,98,45,0.07) 0%, transparent 70%), radial-gradient(ellipse 40% 40% at 15% 75%, rgba(122,139,111,0.05) 0%, transparent 60%); }
+.hero-grid { position: absolute; inset: 0; opacity: 0.025; background-image: linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px); background-size: 80px 80px; }
+.hero-inner { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; width: 100%; max-width: 1320px; margin: 0 auto; }
+.hero-text { max-width: 560px; }
+.hero-eyebrow { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 24px; opacity: 0; transform: translateY(16px); animation: up 0.7s 0.2s forwards; }
+.hero h1 { font-family: var(--serif); font-size: clamp(2.6rem,5.5vw,4.2rem); color: #fff; line-height: 1.08; letter-spacing: -0.02em; margin-bottom: 22px; opacity: 0; transform: translateY(24px); animation: up 0.7s 0.35s forwards; }
+.hero h1 em { font-style: italic; color: var(--accent-hover); }
+.hero-sub { font-size: 0.98rem; font-weight: 300; color: rgba(255,255,255,0.45); line-height: 1.75; max-width: 460px; margin-bottom: 44px; opacity: 0; transform: translateY(16px); animation: up 0.7s 0.5s forwards; }
+.hero-stats { display: flex; gap: 44px; opacity: 0; transform: translateY(16px); animation: up 0.7s 0.65s forwards; }
+.hero-stat { position: relative; padding-top: 16px; }
+.hero-stat::before { content: ''; position: absolute; top: 0; left: 0; width: 28px; height: 2px; background: var(--accent); }
+.stat-num { font-family: var(--serif); font-size: 2rem; color: #fff; line-height: 1.1; }
+.stat-lbl { font-size: 0.7rem; font-weight: 400; color: rgba(255,255,255,0.35); letter-spacing: 0.04em; text-transform: uppercase; margin-top: 2px; }
+.hero-slide-preview { position: relative; opacity: 0; transform: translateY(30px) rotate(1deg); animation: up 0.8s 0.6s forwards; }
+.hero-slide-preview svg { width: 100%; height: auto; border-radius: 8px; box-shadow: 0 40px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.04); }
+@keyframes up { to { opacity: 1; transform: translateY(0) rotate(0); } }
+
+section { padding: clamp(80px,10vw,128px) clamp(24px,4vw,56px); }
+.section-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+.section-title { font-family: var(--serif); font-size: clamp(2rem,4vw,3rem); letter-spacing: -0.015em; line-height: 1.12; margin-bottom: 16px; }
+.section-desc { font-size: 0.98rem; font-weight: 300; color: var(--text-2); max-width: 520px; line-height: 1.75; margin-bottom: 60px; }
+
+.rv { opacity: 0; transform: translateY(36px); transition: opacity 0.65s cubic-bezier(0.16,1,0.3,1), transform 0.65s cubic-bezier(0.16,1,0.3,1); }
+.rv.vis { opacity: 1; transform: translateY(0); }
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}.d5{transition-delay:.4s}.d6{transition-delay:.48s}
+
+#work { background: var(--warm-white); }
+.filter-bar { display: flex; gap: 8px; margin-bottom: 40px; flex-wrap: wrap; }
+.filter-btn { padding: 8px 20px; border: 1px solid var(--border); border-radius: 100px; background: transparent; font-family: var(--sans); font-size: 0.74rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-3); cursor: pointer; transition: all 0.3s; }
+.filter-btn:hover,.filter-btn.active { background: var(--dark); border-color: var(--dark); color: #fff; }
+.port-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; max-width: 1320px; margin: 0 auto; }
+.port-card { position: relative; border-radius: 10px; overflow: hidden; cursor: pointer; background: #fff; border: 1px solid var(--border); transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s; }
+.port-card:hover { transform: translateY(-5px); box-shadow: 0 20px 48px rgba(24,21,15,0.1); }
+.port-card svg { width: 100%; display: block; }
+.port-ov { position: absolute; inset: 0; background: linear-gradient(to top, rgba(24,21,15,0.93) 0%, rgba(24,21,15,0.3) 55%, transparent 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 24px; opacity: 0; transition: opacity 0.35s; }
+.port-card:hover .port-ov { opacity: 1; }
+.port-tag { display: inline-block; font-size: 0.62rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-hover); background: rgba(184,98,45,0.15); padding: 3px 10px; border-radius: 4px; margin-bottom: 8px; width: fit-content; }
+.port-title { font-family: var(--serif); font-size: 1.2rem; color: #fff; margin-bottom: 6px; }
+.port-desc { font-size: 0.78rem; font-weight: 300; color: rgba(255,255,255,0.6); line-height: 1.55; }
+
+#process { background: var(--cream); }
+.process-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 24px; max-width: 1100px; }
+.proc-card { padding: 32px 28px; background: #fff; border: 1px solid var(--border); border-radius: 10px; transition: all 0.3s; }
+.proc-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+.proc-num { font-family: var(--serif); font-size: 2.2rem; color: var(--accent); opacity: 0.25; line-height: 1; margin-bottom: 16px; }
+.proc-title { font-family: var(--serif); font-size: 1.1rem; margin-bottom: 10px; }
+.proc-text { font-size: 0.8rem; font-weight: 300; color: var(--text-2); line-height: 1.65; }
+
+#skills { background: var(--warm-white); }
+.skills-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; max-width: 960px; }
+.skill-group-title { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-3); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+.skill-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid rgba(221,215,205,0.5); }
+.skill-name { font-size: 0.92rem; }
+.skill-bar-wrap { width: 120px; height: 4px; background: rgba(221,215,205,0.6); border-radius: 4px; overflow: hidden; }
+.skill-bar { height: 100%; border-radius: 4px; background: var(--accent); transform-origin: left; transform: scaleX(0); transition: transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+.vis .skill-bar { transform: scaleX(1); }
+
+#about { background: var(--cream); }
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; max-width: 1060px; align-items: start; }
+.about-text p { font-size: 1rem; font-weight: 300; color: var(--text-2); line-height: 1.8; margin-bottom: 18px; }
+.about-text p:first-child::first-letter { font-family: var(--serif); font-size: 3rem; float: left; line-height: 0.85; margin-right: 8px; margin-top: 5px; color: var(--accent); }
+.about-detail { padding: 18px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; }
+.about-dlbl { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); }
+.about-dval { font-size: 0.88rem; }
+
+#contact { background: var(--dark); text-align: center; padding: clamp(80px,10vw,128px) clamp(24px,4vw,56px); }
+#contact .section-label { color: var(--accent-hover); }
+#contact .section-title { color: #fff; max-width: 560px; margin: 0 auto 16px; }
+#contact .section-desc { color: rgba(255,255,255,0.4); margin: 0 auto 52px; text-align: center; }
+.cta-links { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+.cta-link { display: inline-flex; align-items: center; gap: 10px; padding: 14px 32px; border: 1px solid rgba(255,255,255,0.12); border-radius: 50px; text-decoration: none; color: rgba(255,255,255,0.7); font-size: 0.84rem; transition: all 0.3s; }
+.cta-link:hover { border-color: var(--accent); color: #fff; background: rgba(184,98,45,0.1); }
+.cta-link svg { width: 17px; height: 17px; }
+
+footer { background: var(--dark); border-top: 1px solid rgba(255,255,255,0.05); padding: 28px clamp(24px,4vw,56px); display: flex; justify-content: space-between; }
+footer p { font-size: 0.74rem; color: rgba(255,255,255,0.22); }
+
+@media(max-width:1100px){.hero-inner{grid-template-columns:1fr;gap:48px}.hero-slide-preview{max-width:520px}.port-grid{grid-template-columns:repeat(2,1fr)}.process-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){.nav-links,.nav-cta{display:none}.nav-links.open{display:flex;flex-direction:column;position:absolute;top:68px;left:0;right:0;background:rgba(24,21,15,0.98);padding:20px 24px 28px;gap:16px}nav.scrolled .nav-links.open{background:rgba(245,240,232,0.98)}.nav-toggle{display:block}.port-grid{grid-template-columns:1fr;max-width:480px}.process-grid{grid-template-columns:1fr}.skills-cols{grid-template-columns:1fr}.about-grid{grid-template-columns:1fr;gap:40px}.hero-stats{gap:28px;flex-wrap:wrap}footer{flex-direction:column;gap:8px;text-align:center}}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <span class="nav-logo">Kade Halvorson</span>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#work">Work</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Get in Touch</a>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+</nav>
+
+<section class="hero" id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <p class="hero-eyebrow">Presentation Designer · UI Specialist · Minnesota</p>
+      <h1>Slides that move <em>leadership</em> to action</h1>
+      <p class="hero-sub">I design executive presentations, data-driven slide decks, and polished UI experiences that translate complexity into visual clarity — on brand, on time, on point.</p>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="stat-num">200+</div><div class="stat-lbl">Decks Designed</div></div>
+        <div class="hero-stat"><div class="stat-num">4+ Yrs</div><div class="stat-lbl">Slide & UI Design</div></div>
+        <div class="hero-stat"><div class="stat-num">$170M</div><div class="stat-lbl">Portfolio Visualized</div></div>
+      </div>
+    </div>
+    <div class="hero-slide-preview">
+      <svg viewBox="0 0 560 340" xmlns="http://www.w3.org/2000/svg">
+        <rect width="560" height="340" rx="6" fill="#fff"/>
+        <rect width="560" height="5" rx="3" fill="#B8622D"/>
+        <rect x="40" y="32" width="4" height="52" rx="2" fill="#B8622D"/>
+        <text x="56" y="56" font-family="Georgia,serif" font-size="20" fill="#18150F" font-weight="bold">Quarterly Performance Review</text>
+        <text x="56" y="76" font-family="sans-serif" font-size="11" fill="#8E8579">FY2025 · Q3 Results &amp; Strategic Outlook</text>
+        <rect x="40" y="100" width="150" height="90" rx="8" fill="#F5F0E8"/>
+        <text x="56" y="124" font-family="sans-serif" font-size="8" fill="#8E8579" letter-spacing="1">REVENUE</text>
+        <text x="56" y="154" font-family="Georgia,serif" font-size="28" fill="#18150F">$24.8M</text>
+        <text x="56" y="174" font-family="sans-serif" font-size="10" fill="#7A8B6F">▲ 14.2% YoY</text>
+        <rect x="205" y="100" width="150" height="90" rx="8" fill="#F5F0E8"/>
+        <text x="221" y="124" font-family="sans-serif" font-size="8" fill="#8E8579" letter-spacing="1">RETENTION</text>
+        <text x="221" y="154" font-family="Georgia,serif" font-size="28" fill="#18150F">94.7%</text>
+        <text x="221" y="174" font-family="sans-serif" font-size="10" fill="#7A8B6F">▲ 3.1 pts</text>
+        <rect x="370" y="100" width="150" height="90" rx="8" fill="#F5F0E8"/>
+        <text x="386" y="124" font-family="sans-serif" font-size="8" fill="#8E8579" letter-spacing="1">NPS SCORE</text>
+        <text x="386" y="154" font-family="Georgia,serif" font-size="28" fill="#B8622D">78</text>
+        <text x="386" y="174" font-family="sans-serif" font-size="10" fill="#7A8B6F">▲ 6 pts</text>
+        <rect x="40" y="206" width="310" height="110" rx="8" fill="#FAFAF6" stroke="#E8E3DC" stroke-width="0.8"/>
+        <text x="56" y="226" font-family="sans-serif" font-size="8" fill="#8E8579" letter-spacing="0.8">MONTHLY REVENUE TREND</text>
+        <line x1="56" y1="244" x2="334" y2="244" stroke="#EDE8E0" stroke-width="0.5"/>
+        <line x1="56" y1="264" x2="334" y2="264" stroke="#EDE8E0" stroke-width="0.5"/>
+        <line x1="56" y1="284" x2="334" y2="284" stroke="#EDE8E0" stroke-width="0.5"/>
+        <rect x="64" y="260" width="18" height="38" rx="3" fill="#B8622D" opacity="0.3"/>
+        <rect x="90" y="252" width="18" height="46" rx="3" fill="#B8622D" opacity="0.4"/>
+        <rect x="116" y="248" width="18" height="50" rx="3" fill="#B8622D" opacity="0.5"/>
+        <rect x="142" y="256" width="18" height="42" rx="3" fill="#B8622D" opacity="0.45"/>
+        <rect x="168" y="240" width="18" height="58" rx="3" fill="#B8622D" opacity="0.6"/>
+        <rect x="194" y="236" width="18" height="62" rx="3" fill="#B8622D" opacity="0.7"/>
+        <rect x="220" y="244" width="18" height="54" rx="3" fill="#B8622D" opacity="0.6"/>
+        <rect x="246" y="232" width="18" height="66" rx="3" fill="#B8622D" opacity="0.8"/>
+        <rect x="272" y="226" width="18" height="72" rx="3" fill="#B8622D" opacity="0.9"/>
+        <rect x="298" y="220" width="18" height="78" rx="3" fill="#B8622D"/>
+        <rect x="370" y="206" width="150" height="110" rx="8" fill="#FAFAF6" stroke="#E8E3DC" stroke-width="0.8"/>
+        <text x="386" y="226" font-family="sans-serif" font-size="8" fill="#8E8579" letter-spacing="0.8">BY SEGMENT</text>
+        <circle cx="445" cy="278" r="30" fill="none" stroke="#EDE8E0" stroke-width="10"/>
+        <circle cx="445" cy="278" r="30" fill="none" stroke="#B8622D" stroke-width="10" stroke-dasharray="131 58" stroke-linecap="round" transform="rotate(-90 445 278)"/>
+        <circle cx="445" cy="278" r="30" fill="none" stroke="#7A8B6F" stroke-width="10" stroke-dasharray="42 147" stroke-dashoffset="-131" stroke-linecap="round" transform="rotate(-90 445 278)"/>
+        <text x="437" y="282" font-family="Georgia,serif" font-size="13" fill="#18150F" font-weight="bold">70%</text>
+        <rect x="456" y="18" width="80" height="18" rx="4" fill="#F5F0E8"/>
+        <text x="468" y="31" font-family="sans-serif" font-size="8" fill="#8E8579">ACME Corp</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section id="work">
+  <div class="rv"><p class="section-label">Selected Work</p><h2 class="section-title">Presentation & UI Design</h2><p class="section-desc">Executive decks, data-driven slides, and app interfaces — designed to clarify, persuade, and elevate every message.</p></div>
+  <div class="filter-bar rv d1">
+    <button class="filter-btn active" data-filter="all">All Work</button>
+    <button class="filter-btn" data-filter="ppt">Slide Design</button>
+    <button class="filter-btn" data-filter="app">PowerApps UI</button>
+    <button class="filter-btn" data-filter="viz">Data Visualization</button>
+  </div>
+  <div class="port-grid">
+
+    <!-- 1: Dark Executive Title Slide -->
+    <div class="port-card rv d1" data-cat="ppt">
+      <svg viewBox="0 0 480 340" xmlns="http://www.w3.org/2000/svg">
+        <rect width="480" height="340" fill="#18150F"/>
+        <line x1="0" y1="340" x2="200" y2="0" stroke="rgba(255,255,255,0.02)" stroke-width="60"/>
+        <line x1="120" y1="340" x2="320" y2="0" stroke="rgba(255,255,255,0.015)" stroke-width="60"/>
+        <line x1="280" y1="340" x2="480" y2="0" stroke="rgba(255,255,255,0.02)" stroke-width="60"/>
+        <rect x="44" y="80" width="3" height="72" rx="1.5" fill="#B8622D"/>
+        <text x="60" y="110" font-family="Georgia,serif" font-size="30" fill="#fff" font-weight="bold">Strategic Outlook</text>
+        <text x="60" y="142" font-family="Georgia,serif" font-size="30" fill="rgba(255,255,255,0.4)">FY2026 Priorities</text>
+        <text x="60" y="178" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,0.3)" letter-spacing="0.5">Presented to the Board of Directors · January 2026</text>
+        <rect x="0" y="326" width="480" height="14" fill="#B8622D"/>
+        <rect x="380" y="286" width="60" height="20" rx="4" fill="rgba(255,255,255,0.06)"/>
+        <text x="392" y="300" font-family="sans-serif" font-size="8" fill="rgba(255,255,255,0.25)">BRAND</text>
+        <circle cx="420" cy="120" r="80" fill="none" stroke="rgba(255,255,255,0.02)" stroke-width="1"/>
+        <circle cx="420" cy="120" r="50" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+        <circle cx="420" cy="120" r="20" fill="rgba(184,98,45,0.08)"/>
+      </svg>
+      <div class="port-ov"><span class="port-tag">Slide Design</span><h3 class="port-title">Executive Title Slide — Dark Theme</h3><p class="port-desc">Cinematic title card for board-level presentations with refined typography and brand accent.</p></div>
+    </div>
+
+    <!-- 2: Multi-Metric Data Slide -->
+    <div class="port-card rv d2" data-cat="ppt">
+      <svg viewBox="0 0 480 340" xmlns="http://www.w3.org/2000/svg">
+        <rect width="480" height="340" fill="#fff"/>
+        <rect width="480" height="4" fill="#B8622D"/>
+        <rect x="32" y="24" width="3" height="32" rx="1.5" fill="#B8622D"/>
+        <text x="44" y="42" font-family="Georgia,serif" font-size="16" fill="#18150F">Program Outcomes at a Glance</text>
+        <text x="44" y="56" font-family="sans-serif" font-size="8" fill="#8E8579">Q3 2025 · All Regions</text>
+        <rect x="32" y="72" width="100" height="72" rx="6" fill="#F5F0E8"/>
+        <text x="44" y="90" font-family="sans-serif" font-size="7" fill="#8E8579" letter-spacing="0.8">ENROLLMENT</text>
+        <text x="44" y="118" font-family="Georgia,serif" font-size="24" fill="#18150F">12,480</text>
+        <text x="44" y="134" font-family="sans-serif" font-size="8" fill="#7A8B6F">↑ 8.3%</text>
+        <rect x="142" y="72" width="100" height="72" rx="6" fill="#F5F0E8"/>
+        <text x="154" y="90" font-family="sans-serif" font-size="7" fill="#8E8579" letter-spacing="0.8">COMPLETION</text>
+        <text x="154" y="118" font-family="Georgia,serif" font-size="24" fill="#18150F">87%</text>
+        <text x="154" y="134" font-family="sans-serif" font-size="8" fill="#7A8B6F">↑ 4.1 pts</text>
+        <rect x="252" y="72" width="100" height="72" rx="6" fill="#F5F0E8"/>
+        <text x="264" y="90" font-family="sans-serif" font-size="7" fill="#8E8579" letter-spacing="0.8">SATISFACTION</text>
+        <text x="264" y="118" font-family="Georgia,serif" font-size="24" fill="#B8622D">4.6</text>
+        <text x="291" y="118" font-family="sans-serif" font-size="12" fill="#8E8579">/5</text>
+        <text x="264" y="134" font-family="sans-serif" font-size="8" fill="#7A8B6F">↑ 0.3</text>
+        <rect x="362" y="72" width="100" height="72" rx="6" fill="#F5F0E8"/>
+        <text x="374" y="90" font-family="sans-serif" font-size="7" fill="#8E8579" letter-spacing="0.8">COST/HEAD</text>
+        <text x="374" y="118" font-family="Georgia,serif" font-size="24" fill="#18150F">$842</text>
+        <text x="374" y="134" font-family="sans-serif" font-size="8" fill="#B8622D">↓ 12%</text>
+        <rect x="32" y="156" width="260" height="156" rx="8" fill="#FAFAF6" stroke="#EDE8E0" stroke-width="0.6"/>
+        <text x="44" y="176" font-family="sans-serif" font-size="8" fill="#8E8579" letter-spacing="0.8">ENROLLMENT BY REGION</text>
+        <line x1="44" y1="196" x2="278" y2="196" stroke="#EDE8E0" stroke-width="0.5"/>
+        <line x1="44" y1="228" x2="278" y2="228" stroke="#EDE8E0" stroke-width="0.5"/>
+        <line x1="44" y1="260" x2="278" y2="260" stroke="#EDE8E0" stroke-width="0.5"/>
+        <line x1="44" y1="292" x2="278" y2="292" stroke="#EDE8E0" stroke-width="0.5"/>
+        <rect x="56" y="232" width="14" height="58" rx="2" fill="#B8622D"/><rect x="72" y="252" width="14" height="38" rx="2" fill="#B8622D" opacity="0.35"/>
+        <rect x="108" y="216" width="14" height="74" rx="2" fill="#B8622D"/><rect x="124" y="240" width="14" height="50" rx="2" fill="#B8622D" opacity="0.35"/>
+        <rect x="160" y="244" width="14" height="46" rx="2" fill="#B8622D"/><rect x="176" y="260" width="14" height="30" rx="2" fill="#B8622D" opacity="0.35"/>
+        <rect x="212" y="224" width="14" height="66" rx="2" fill="#B8622D"/><rect x="228" y="248" width="14" height="42" rx="2" fill="#B8622D" opacity="0.35"/>
+        <text x="67" y="302" font-family="sans-serif" font-size="7" fill="#AAA" text-anchor="middle">NE</text>
+        <text x="119" y="302" font-family="sans-serif" font-size="7" fill="#AAA" text-anchor="middle">SE</text>
+        <text x="171" y="302" font-family="sans-serif" font-size="7" fill="#AAA" text-anchor="middle">MW</text>
+        <text x="223" y="302" font-family="sans-serif" font-size="7" fill="#AAA" text-anchor="middle">W</text>
+        <rect x="302" y="156" width="160" height="156" rx="8" fill="#FAFAF6" stroke="#EDE8E0" stroke-width="0.6"/>
+        <text x="314" y="176" font-family="sans-serif" font-size="8" fill="#8E8579" letter-spacing="0.8">KEY TAKEAWAYS</text>
+        <rect x="314" y="188" width="6" height="6" rx="3" fill="#B8622D"/><text x="326" y="194" font-family="sans-serif" font-size="8.5" fill="#3A352E">Enrollment up across all regions</text>
+        <rect x="314" y="210" width="6" height="6" rx="3" fill="#B8622D"/><text x="326" y="216" font-family="sans-serif" font-size="8.5" fill="#3A352E">Midwest shows strongest gains</text>
+        <rect x="314" y="232" width="6" height="6" rx="3" fill="#B8622D"/><text x="326" y="238" font-family="sans-serif" font-size="8.5" fill="#3A352E">Cost-per-head reduced 12%</text>
+        <rect x="314" y="254" width="6" height="6" rx="3" fill="#7A8B6F"/><text x="326" y="260" font-family="sans-serif" font-size="8.5" fill="#3A352E">Satisfaction at all-time high</text>
+        <text x="448" y="328" font-family="sans-serif" font-size="8" fill="#CCC">04</text>
+      </svg>
+      <div class="port-ov"><span class="port-tag">Slide Design</span><h3 class="port-title">Program Outcomes Data Slide</h3><p class="port-desc">KPI cards, grouped bar chart, and structured takeaways for leadership review.</p></div>
+    </div>
+
+    <!-- 3: PowerApps Request Tracker -->
+    <div class="port-card rv d3" data-cat="app">
+      <svg viewBox="0 0 480 340" xmlns="http://www.w3.org/2000/svg">
+        <rect width="480" height="340" fill="#F2F0EC"/>
+        <rect x="20" y="12" width="440" height="316" rx="10" fill="#fff" stroke="#DDD7CD" stroke-width="1"/>
+        <rect x="20" y="12" width="440" height="44" rx="10" fill="#18150F"/><rect x="20" y="36" width="440" height="20" fill="#18150F"/>
+        <text x="40" y="40" font-family="sans-serif" font-size="12" fill="#fff" font-weight="bold">Request Tracker</text>
+        <rect x="200" y="26" width="160" height="24" rx="12" fill="rgba(255,255,255,0.08)"/>
+        <text x="216" y="42" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.35)">Search requests...</text>
+        <rect x="380" y="26" width="64" height="24" rx="6" fill="#B8622D"/>
+        <text x="395" y="42" font-family="sans-serif" font-size="9" fill="#fff" font-weight="bold">+ New</text>
+        <rect x="36" y="68" width="52" height="22" rx="6" fill="#18150F"/>
+        <text x="46" y="83" font-family="sans-serif" font-size="8" fill="#fff" font-weight="bold">Active</text>
+        <text x="102" y="83" font-family="sans-serif" font-size="8" fill="#8E8579">Pending</text>
+        <text x="152" y="83" font-family="sans-serif" font-size="8" fill="#8E8579">Closed</text>
+        <text x="196" y="83" font-family="sans-serif" font-size="8" fill="#8E8579">All</text>
+        <text x="36" y="108" font-family="sans-serif" font-size="7" fill="#AAA" letter-spacing="0.8">REQUEST</text>
+        <text x="200" y="108" font-family="sans-serif" font-size="7" fill="#AAA" letter-spacing="0.8">ASSIGNED</text>
+        <text x="290" y="108" font-family="sans-serif" font-size="7" fill="#AAA" letter-spacing="0.8">PRIORITY</text>
+        <text x="365" y="108" font-family="sans-serif" font-size="7" fill="#AAA" letter-spacing="0.8">STATUS</text>
+        <line x1="36" y1="114" x2="444" y2="114" stroke="#EDE8E0" stroke-width="0.8"/>
+        <circle cx="48" cy="132" r="8" fill="#B8622D" opacity="0.1"/><text x="44" y="135" font-family="sans-serif" font-size="8" fill="#B8622D" font-weight="bold">B</text>
+        <text x="64" y="130" font-family="sans-serif" font-size="9" fill="#18150F" font-weight="500">Budget reallocation Q4</text>
+        <text x="64" y="142" font-family="sans-serif" font-size="7.5" fill="#AAA">REQ-2847 · Dec 14</text>
+        <circle cx="210" cy="134" r="9" fill="#E8E3DC"/><text x="207" y="137" font-family="sans-serif" font-size="7" fill="#5C5549">JL</text>
+        <rect x="278" y="126" width="46" height="16" rx="8" fill="#FFE8D6"/><text x="290" y="138" font-family="sans-serif" font-size="7" fill="#B8622D" font-weight="bold">High</text>
+        <rect x="355" y="126" width="62" height="16" rx="8" fill="#7A8B6F" opacity="0.15"/><text x="366" y="138" font-family="sans-serif" font-size="7" fill="#7A8B6F" font-weight="bold">In Review</text>
+        <line x1="36" y1="154" x2="444" y2="154" stroke="#F5F0E8" stroke-width="0.5"/>
+        <circle cx="48" cy="172" r="8" fill="#7A8B6F" opacity="0.1"/><text x="44" y="175" font-family="sans-serif" font-size="8" fill="#7A8B6F" font-weight="bold">H</text>
+        <text x="64" y="170" font-family="sans-serif" font-size="9" fill="#18150F" font-weight="500">New hire onboarding form</text>
+        <text x="64" y="182" font-family="sans-serif" font-size="7.5" fill="#AAA">REQ-2842 · Dec 12</text>
+        <circle cx="210" cy="174" r="9" fill="#E8E3DC"/><text x="206" y="177" font-family="sans-serif" font-size="7" fill="#5C5549">MK</text>
+        <rect x="278" y="166" width="46" height="16" rx="8" fill="#E8E3DC"/><text x="288" y="178" font-family="sans-serif" font-size="7" fill="#5C5549" font-weight="bold">Med</text>
+        <rect x="355" y="166" width="62" height="16" rx="8" fill="#B8622D" opacity="0.12"/><text x="368" y="178" font-family="sans-serif" font-size="7" fill="#B8622D" font-weight="bold">Active</text>
+        <line x1="36" y1="194" x2="444" y2="194" stroke="#F5F0E8" stroke-width="0.5"/>
+        <circle cx="48" cy="212" r="8" fill="#5583C1" opacity="0.1"/><text x="45" y="215" font-family="sans-serif" font-size="8" fill="#5583C1" font-weight="bold">P</text>
+        <text x="64" y="210" font-family="sans-serif" font-size="9" fill="#18150F" font-weight="500">Policy update distribution</text>
+        <text x="64" y="222" font-family="sans-serif" font-size="7.5" fill="#AAA">REQ-2839 · Dec 10</text>
+        <circle cx="210" cy="214" r="9" fill="#E8E3DC"/><text x="207" y="217" font-family="sans-serif" font-size="7" fill="#5C5549">SR</text>
+        <rect x="278" y="206" width="46" height="16" rx="8" fill="#E8E3DC"/><text x="289" y="218" font-family="sans-serif" font-size="7" fill="#5C5549" font-weight="bold">Low</text>
+        <rect x="355" y="206" width="62" height="16" rx="8" fill="#7A8B6F" opacity="0.15"/><text x="366" y="218" font-family="sans-serif" font-size="7" fill="#7A8B6F" font-weight="bold">In Review</text>
+        <line x1="36" y1="234" x2="444" y2="234" stroke="#F5F0E8" stroke-width="0.5"/>
+        <circle cx="48" cy="252" r="8" fill="#B8622D" opacity="0.1"/><text x="44" y="255" font-family="sans-serif" font-size="8" fill="#B8622D" font-weight="bold">R</text>
+        <text x="64" y="250" font-family="sans-serif" font-size="9" fill="#18150F" font-weight="500">Reporting dashboard access</text>
+        <text x="64" y="262" font-family="sans-serif" font-size="7.5" fill="#AAA">REQ-2835 · Dec 8</text>
+        <circle cx="210" cy="254" r="9" fill="#E8E3DC"/><text x="206" y="257" font-family="sans-serif" font-size="7" fill="#5C5549">AW</text>
+        <rect x="278" y="246" width="46" height="16" rx="8" fill="#FFE8D6"/><text x="290" y="258" font-family="sans-serif" font-size="7" fill="#B8622D" font-weight="bold">High</text>
+        <rect x="355" y="246" width="62" height="16" rx="8" fill="#B8622D" opacity="0.12"/><text x="368" y="258" font-family="sans-serif" font-size="7" fill="#B8622D" font-weight="bold">Active</text>
+        <rect x="20" y="288" width="440" height="40" rx="0" fill="#FAFAF6"/>
+        <text x="36" y="312" font-family="sans-serif" font-size="8" fill="#AAA">Showing 4 of 23 active requests</text>
+        <rect x="370" y="300" width="24" height="18" rx="4" fill="#18150F"/><text x="378" y="313" font-family="sans-serif" font-size="8" fill="#fff">1</text>
+        <text x="402" y="313" font-family="sans-serif" font-size="8" fill="#AAA">2</text><text x="418" y="313" font-family="sans-serif" font-size="8" fill="#AAA">3</text>
+      </svg>
+      <div class="port-ov"><span class="port-tag">PowerApps UI</span><h3 class="port-title">Internal Request Tracker</h3><p class="port-desc">Clean list-view app with priority badges, status filters, and role-based assignment.</p></div>
+    </div>
+
+    <!-- 4: Infographic Process Slide -->
+    <div class="port-card rv d1" data-cat="ppt">
+      <svg viewBox="0 0 480 340" xmlns="http://www.w3.org/2000/svg">
+        <rect width="480" height="340" fill="#fff"/>
+        <rect width="480" height="4" fill="#7A8B6F"/>
+        <text x="40" y="36" font-family="Georgia,serif" font-size="16" fill="#18150F">The Path to Impact: Our 4-Step Model</text>
+        <text x="40" y="52" font-family="sans-serif" font-size="9" fill="#8E8579">How we translate research into actionable policy recommendations</text>
+        <line x1="80" y1="100" x2="400" y2="100" stroke="#EDE8E0" stroke-width="2"/>
+        <circle cx="80" cy="100" r="18" fill="#B8622D"/><text x="76" y="105" font-family="Georgia,serif" font-size="14" fill="#fff" font-weight="bold">1</text>
+        <text x="80" y="136" font-family="Georgia,serif" font-size="12" fill="#18150F" text-anchor="middle" font-weight="bold">Research</text>
+        <text x="80" y="150" font-family="sans-serif" font-size="7.5" fill="#8E8579" text-anchor="middle">Data collection</text>
+        <text x="80" y="162" font-family="sans-serif" font-size="7.5" fill="#8E8579" text-anchor="middle">&amp; analysis</text>
+        <circle cx="187" cy="100" r="18" fill="#B8622D" opacity="0.8"/><text x="183" y="105" font-family="Georgia,serif" font-size="14" fill="#fff" font-weight="bold">2</text>
+        <text x="187" y="136" font-family="Georgia,serif" font-size="12" fill="#18150F" text-anchor="middle" font-weight="bold">Insights</text>
+        <text x="187" y="150" font-family="sans-serif" font-size="7.5" fill="#8E8579" text-anchor="middle">Pattern identification</text>
+        <text x="187" y="162" font-family="sans-serif" font-size="7.5" fill="#8E8579" text-anchor="middle">&amp; key findings</text>
+        <circle cx="293" cy="100" r="18" fill="#B8622D" opacity="0.6"/><text x="289" y="105" font-family="Georgia,serif" font-size="14" fill="#fff" font-weight="bold">3</text>
+        <text x="293" y="136" font-family="Georgia,serif" font-size="12" fill="#18150F" text-anchor="middle" font-weight="bold">Design</text>
+        <text x="293" y="150" font-family="sans-serif" font-size="7.5" fill="#8E8579" text-anchor="middle">Visual communication</text>
+        <text x="293" y="162" font-family="sans-serif" font-size="7.5" fill="#8E8579" text-anchor="middle">&amp; storytelling</text>
+        <circle cx="400" cy="100" r="18" fill="#7A8B6F"/><text x="396" y="105" font-family="Georgia,serif" font-size="14" fill="#fff" font-weight="bold">4</text>
+        <text x="400" y="136" font-family="Georgia,serif" font-size="12" fill="#18150F" text-anchor="middle" font-weight="bold">Impact</text>
+        <text x="400" y="150" font-family="sans-serif" font-size="7.5" fill="#8E8579" text-anchor="middle">Policy adoption</text>
+        <text x="400" y="162" font-family="sans-serif" font-size="7.5" fill="#8E8579" text-anchor="middle">&amp; outcomes</text>
+        <polygon points="104,100 112,96 112,104" fill="#B8622D" opacity="0.5"/>
+        <polygon points="211,100 219,96 219,104" fill="#B8622D" opacity="0.4"/>
+        <polygon points="317,100 325,96 325,104" fill="#B8622D" opacity="0.3"/>
+        <rect x="40" y="190" width="128" height="110" rx="8" fill="#F5F0E8"/>
+        <text x="48" y="252" font-family="Georgia,serif" font-size="22" fill="#18150F" font-weight="bold">48</text>
+        <text x="48" y="268" font-family="sans-serif" font-size="8" fill="#8E8579">Research briefs</text>
+        <text x="48" y="280" font-family="sans-serif" font-size="8" fill="#8E8579">published in FY25</text>
+        <rect x="180" y="190" width="128" height="110" rx="8" fill="#F5F0E8"/>
+        <text x="188" y="252" font-family="Georgia,serif" font-size="22" fill="#18150F" font-weight="bold">12</text>
+        <text x="188" y="268" font-family="sans-serif" font-size="8" fill="#8E8579">State policies</text>
+        <text x="188" y="280" font-family="sans-serif" font-size="8" fill="#8E8579">directly informed</text>
+        <rect x="320" y="190" width="128" height="110" rx="8" fill="#F5F0E8"/>
+        <text x="328" y="252" font-family="Georgia,serif" font-size="22" fill="#18150F" font-weight="bold">3.2M</text>
+        <text x="328" y="268" font-family="sans-serif" font-size="8" fill="#8E8579">Children &amp; families</text>
+        <text x="328" y="280" font-family="sans-serif" font-size="8" fill="#8E8579">reached by programs</text>
+        <text x="448" y="328" font-family="sans-serif" font-size="8" fill="#CCC">07</text>
+      </svg>
+      <div class="port-ov"><span class="port-tag">Slide Design</span><h3 class="port-title">Process Infographic Slide</h3><p class="port-desc">Research-to-impact story arc with timeline visualization and statistics for stakeholder meetings.</p></div>
+    </div>
+
+    <!-- 5: PowerApps Dashboard -->
+    <div class="port-card rv d2" data-cat="app">
+      <svg viewBox="0 0 480 340" xmlns="http://www.w3.org/2000/svg">
+        <rect width="480" height="340" fill="#F2F0EC"/>
+        <rect x="20" y="12" width="440" height="316" rx="10" fill="#fff" stroke="#DDD7CD" stroke-width="1"/>
+        <rect x="20" y="12" width="56" height="316" rx="10" fill="#18150F"/><rect x="56" y="12" width="20" height="316" fill="#18150F"/>
+        <rect x="34" y="28" width="24" height="24" rx="6" fill="#B8622D"/><text x="41" y="45" font-family="sans-serif" font-size="12" fill="#fff" font-weight="bold">K</text>
+        <rect x="36" y="68" width="20" height="3" rx="1.5" fill="rgba(255,255,255,0.25)"/>
+        <rect x="36" y="84" width="20" height="3" rx="1.5" fill="rgba(255,255,255,0.12)"/>
+        <rect x="36" y="100" width="20" height="3" rx="1.5" fill="rgba(255,255,255,0.12)"/>
+        <rect x="36" y="116" width="20" height="3" rx="1.5" fill="rgba(255,255,255,0.12)"/>
+        <text x="92" y="40" font-family="sans-serif" font-size="13" fill="#18150F" font-weight="600">Dashboard</text>
+        <text x="92" y="56" font-family="sans-serif" font-size="8" fill="#8E8579">Welcome back, Kade · Tuesday, March 10</text>
+        <rect x="92" y="72" width="110" height="68" rx="8" fill="#F5F0E8"/>
+        <text x="104" y="90" font-family="sans-serif" font-size="7" fill="#8E8579" letter-spacing="0.6">OPEN TASKS</text>
+        <text x="104" y="116" font-family="Georgia,serif" font-size="26" fill="#18150F">14</text>
+        <text x="138" y="116" font-family="sans-serif" font-size="9" fill="#B8622D">↓ 3</text>
+        <rect x="212" y="72" width="110" height="68" rx="8" fill="#F5F0E8"/>
+        <text x="224" y="90" font-family="sans-serif" font-size="7" fill="#8E8579" letter-spacing="0.6">APPROVALS</text>
+        <text x="224" y="116" font-family="Georgia,serif" font-size="26" fill="#B8622D">6</text>
+        <text x="244" y="116" font-family="sans-serif" font-size="9" fill="#8E8579">pending</text>
+        <rect x="332" y="72" width="110" height="68" rx="8" fill="#F5F0E8"/>
+        <text x="344" y="90" font-family="sans-serif" font-size="7" fill="#8E8579" letter-spacing="0.6">COMPLETED</text>
+        <text x="344" y="116" font-family="Georgia,serif" font-size="26" fill="#7A8B6F">89</text>
+        <text x="376" y="116" font-family="sans-serif" font-size="9" fill="#7A8B6F">this month</text>
+        <rect x="92" y="152" width="230" height="120" rx="8" fill="#FAFAF6" stroke="#EDE8E0" stroke-width="0.6"/>
+        <text x="104" y="172" font-family="sans-serif" font-size="8" fill="#8E8579" letter-spacing="0.6">WEEKLY ACTIVITY</text>
+        <defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#B8622D" stop-opacity="0.15"/><stop offset="100%" stop-color="#B8622D" stop-opacity="0"/></linearGradient></defs>
+        <path d="M108,250 L140,235 L172,240 L204,220 L236,215 L268,228 L300,205 L300,260 L108,260 Z" fill="url(#ag)"/>
+        <polyline points="108,250 140,235 172,240 204,220 236,215 268,228 300,205" stroke="#B8622D" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="300" cy="205" r="3.5" fill="#B8622D"/>
+        <text x="108" y="270" font-family="sans-serif" font-size="6.5" fill="#BBB">Mon</text><text x="172" y="270" font-family="sans-serif" font-size="6.5" fill="#BBB">Wed</text><text x="236" y="270" font-family="sans-serif" font-size="6.5" fill="#BBB">Fri</text><text x="292" y="270" font-family="sans-serif" font-size="6.5" fill="#BBB">Sun</text>
+        <rect x="332" y="152" width="110" height="120" rx="8" fill="#FAFAF6" stroke="#EDE8E0" stroke-width="0.6"/>
+        <text x="344" y="172" font-family="sans-serif" font-size="8" fill="#8E8579" letter-spacing="0.6">RECENT</text>
+        <rect x="344" y="184" width="8" height="8" rx="2" fill="#B8622D" opacity="0.2"/><text x="358" y="192" font-family="sans-serif" font-size="8" fill="#3A352E">Q4 Budget review</text>
+        <rect x="344" y="204" width="8" height="8" rx="2" fill="#7A8B6F" opacity="0.2"/><text x="358" y="212" font-family="sans-serif" font-size="8" fill="#3A352E">Hiring approval</text>
+        <rect x="344" y="224" width="8" height="8" rx="2" fill="#5583C1" opacity="0.2"/><text x="358" y="232" font-family="sans-serif" font-size="8" fill="#3A352E">Vendor contract</text>
+        <rect x="344" y="244" width="8" height="8" rx="2" fill="#B8622D" opacity="0.2"/><text x="358" y="252" font-family="sans-serif" font-size="8" fill="#3A352E">Policy draft v2</text>
+        <rect x="92" y="284" width="350" height="36" rx="8" fill="#FAFAF6" stroke="#EDE8E0" stroke-width="0.6"/>
+        <text x="104" y="306" font-family="sans-serif" font-size="8" fill="#8E8579">Quick Actions:</text>
+        <rect x="176" y="294" width="70" height="20" rx="6" fill="#18150F"/><text x="189" y="308" font-family="sans-serif" font-size="7.5" fill="#fff">New Request</text>
+        <rect x="254" y="294" width="76" height="20" rx="6" fill="#fff" stroke="#DDD7CD" stroke-width="0.8"/><text x="266" y="308" font-family="sans-serif" font-size="7.5" fill="#5C5549">View Reports</text>
+        <rect x="338" y="294" width="58" height="20" rx="6" fill="#fff" stroke="#DDD7CD" stroke-width="0.8"/><text x="350" y="308" font-family="sans-serif" font-size="7.5" fill="#5C5549">My Team</text>
+      </svg>
+      <div class="port-ov"><span class="port-tag">PowerApps UI</span><h3 class="port-title">Operations Dashboard App</h3><p class="port-desc">Sidebar-nav dashboard with task metrics, activity trends, and quick-action shortcuts.</p></div>
+    </div>
+
+    <!-- 6: Section Divider Slide -->
+    <div class="port-card rv d3" data-cat="ppt">
+      <svg viewBox="0 0 480 340" xmlns="http://www.w3.org/2000/svg">
+        <rect width="480" height="340" fill="#F5F0E8"/>
+        <text x="380" y="260" font-family="Georgia,serif" font-size="200" fill="#18150F" opacity="0.04" text-anchor="middle">02</text>
+        <rect x="48" y="100" width="56" height="3" rx="1.5" fill="#B8622D"/>
+        <text x="48" y="138" font-family="Georgia,serif" font-size="36" fill="#18150F">Financial</text>
+        <text x="48" y="178" font-family="Georgia,serif" font-size="36" fill="#18150F">Overview</text>
+        <text x="48" y="210" font-family="sans-serif" font-size="11" fill="#8E8579">Revenue, expenditures, and grant allocation</text>
+        <text x="48" y="228" font-family="sans-serif" font-size="11" fill="#8E8579">across all program areas.</text>
+        <rect x="48" y="260" width="180" height="1" fill="#DDD7CD"/>
+        <text x="48" y="284" font-family="sans-serif" font-size="8" fill="#B8622D" letter-spacing="1">SECTION TWO</text>
+        <rect x="380" y="40" width="60" height="60" rx="4" fill="none" stroke="#B8622D" stroke-width="1" opacity="0.15"/>
+        <rect x="400" y="60" width="60" height="60" rx="4" fill="none" stroke="#B8622D" stroke-width="1" opacity="0.1"/>
+        <rect x="420" y="80" width="40" height="40" rx="4" fill="#B8622D" opacity="0.06"/>
+      </svg>
+      <div class="port-ov"><span class="port-tag">Slide Design</span><h3 class="port-title">Section Divider Slide</h3><p class="port-desc">Clean section break with oversized typography, brand accent, and geometric detail.</p></div>
+    </div>
+
+    <!-- 7: Horizontal Bar Comparison -->
+    <div class="port-card rv d1" data-cat="viz">
+      <svg viewBox="0 0 480 340" xmlns="http://www.w3.org/2000/svg">
+        <rect width="480" height="340" fill="#fff"/>
+        <rect width="480" height="4" fill="#B8622D"/>
+        <rect x="32" y="22" width="3" height="28" rx="1.5" fill="#B8622D"/>
+        <text x="44" y="38" font-family="Georgia,serif" font-size="15" fill="#18150F">Regional Funding Allocation — FY25 vs FY24</text>
+        <text x="44" y="52" font-family="sans-serif" font-size="8" fill="#8E8579">All figures in millions · Source: Finance Division</text>
+        <text x="44" y="84" font-family="sans-serif" font-size="9" fill="#18150F" font-weight="500">Northeast</text>
+        <rect x="140" y="74" width="220" height="12" rx="3" fill="#B8622D"/><rect x="140" y="90" width="180" height="10" rx="3" fill="#B8622D" opacity="0.25"/>
+        <text x="366" y="84" font-family="sans-serif" font-size="9" fill="#18150F">$22.4M</text>
+        <text x="326" y="99" font-family="sans-serif" font-size="8" fill="#8E8579">$18.2M</text>
+        <text x="44" y="128" font-family="sans-serif" font-size="9" fill="#18150F" font-weight="500">Southeast</text>
+        <rect x="140" y="118" width="280" height="12" rx="3" fill="#7A8B6F"/><rect x="140" y="134" width="240" height="10" rx="3" fill="#7A8B6F" opacity="0.25"/>
+        <text x="426" y="128" font-family="sans-serif" font-size="9" fill="#18150F">$28.1M</text>
+        <text x="386" y="143" font-family="sans-serif" font-size="8" fill="#8E8579">$24.0M</text>
+        <text x="44" y="172" font-family="sans-serif" font-size="9" fill="#18150F" font-weight="500">Midwest</text>
+        <rect x="140" y="162" width="190" height="12" rx="3" fill="#B8622D"/><rect x="140" y="178" width="160" height="10" rx="3" fill="#B8622D" opacity="0.25"/>
+        <text x="336" y="172" font-family="sans-serif" font-size="9" fill="#18150F">$19.4M</text>
+        <text x="306" y="187" font-family="sans-serif" font-size="8" fill="#8E8579">$16.1M</text>
+        <text x="44" y="216" font-family="sans-serif" font-size="9" fill="#18150F" font-weight="500">West</text>
+        <rect x="140" y="206" width="260" height="12" rx="3" fill="#7A8B6F"/><rect x="140" y="222" width="220" height="10" rx="3" fill="#7A8B6F" opacity="0.25"/>
+        <text x="406" y="216" font-family="sans-serif" font-size="9" fill="#18150F">$26.3M</text>
+        <text x="366" y="231" font-family="sans-serif" font-size="8" fill="#8E8579">$22.0M</text>
+        <text x="44" y="260" font-family="sans-serif" font-size="9" fill="#18150F" font-weight="500">Southwest</text>
+        <rect x="140" y="250" width="150" height="12" rx="3" fill="#B8622D"/><rect x="140" y="266" width="120" height="10" rx="3" fill="#B8622D" opacity="0.25"/>
+        <text x="296" y="260" font-family="sans-serif" font-size="9" fill="#18150F">$15.2M</text>
+        <text x="266" y="275" font-family="sans-serif" font-size="8" fill="#8E8579">$12.0M</text>
+        <rect x="140" y="296" width="10" height="6" rx="2" fill="#B8622D"/><text x="154" y="302" font-family="sans-serif" font-size="8" fill="#5C5549">FY2025</text>
+        <rect x="200" y="296" width="10" height="6" rx="2" fill="#B8622D" opacity="0.25"/><text x="214" y="302" font-family="sans-serif" font-size="8" fill="#5C5549">FY2024</text>
+        <rect x="320" y="280" width="136" height="36" rx="6" fill="#F5F0E8" stroke="#B8622D" stroke-width="0.6"/>
+        <text x="332" y="296" font-family="sans-serif" font-size="8" fill="#B8622D" font-weight="bold">↑ $16.1M total increase</text>
+        <text x="332" y="308" font-family="sans-serif" font-size="7" fill="#8E8579">+17% aggregate growth YoY</text>
+        <text x="448" y="328" font-family="sans-serif" font-size="8" fill="#CCC">09</text>
+      </svg>
+      <div class="port-ov"><span class="port-tag">Data Visualization</span><h3 class="port-title">Regional Funding Comparison</h3><p class="port-desc">Year-over-year horizontal bar comparison with annotations for board presentations.</p></div>
+    </div>
+
+    <!-- 8: PowerApps Intake Form -->
+    <div class="port-card rv d2" data-cat="app">
+      <svg viewBox="0 0 480 340" xmlns="http://www.w3.org/2000/svg">
+        <rect width="480" height="340" fill="#F2F0EC"/>
+        <rect x="60" y="12" width="360" height="316" rx="10" fill="#fff" stroke="#DDD7CD" stroke-width="1"/>
+        <rect x="60" y="12" width="360" height="52" rx="10" fill="#18150F"/><rect x="60" y="44" width="360" height="20" fill="#18150F"/>
+        <text x="84" y="44" font-family="sans-serif" font-size="13" fill="#fff" font-weight="600">New Presentation Request</text>
+        <text x="84" y="58" font-family="sans-serif" font-size="8" fill="rgba(255,255,255,0.4)">Submit details for design review</text>
+        <rect x="84" y="80" width="312" height="4" rx="2" fill="#EDE8E0"/><rect x="84" y="80" width="208" height="4" rx="2" fill="#B8622D"/>
+        <text x="84" y="98" font-family="sans-serif" font-size="7.5" fill="#B8622D" font-weight="500">Step 2 of 3 — Project Details</text>
+        <text x="84" y="122" font-family="sans-serif" font-size="8" fill="#5C5549" font-weight="500">Presentation Title *</text>
+        <rect x="84" y="128" width="312" height="32" rx="6" fill="#FAFAF6" stroke="#DDD7CD" stroke-width="0.8"/>
+        <text x="96" y="148" font-family="sans-serif" font-size="9" fill="#18150F">Q4 Board Strategy Review</text>
+        <text x="84" y="180" font-family="sans-serif" font-size="8" fill="#5C5549" font-weight="500">Audience</text>
+        <rect x="84" y="186" width="148" height="32" rx="6" fill="#FAFAF6" stroke="#DDD7CD" stroke-width="0.8"/>
+        <text x="96" y="206" font-family="sans-serif" font-size="9" fill="#18150F">Executive Leadership</text>
+        <text x="248" y="180" font-family="sans-serif" font-size="8" fill="#5C5549" font-weight="500">Due Date</text>
+        <rect x="248" y="186" width="148" height="32" rx="6" fill="#FAFAF6" stroke="#DDD7CD" stroke-width="0.8"/>
+        <text x="260" y="206" font-family="sans-serif" font-size="9" fill="#18150F">March 28, 2026</text>
+        <text x="84" y="238" font-family="sans-serif" font-size="8" fill="#5C5549" font-weight="500">Brand Template</text>
+        <circle cx="96" cy="256" r="7" fill="none" stroke="#DDD7CD" stroke-width="1.5"/><circle cx="96" cy="256" r="4" fill="#B8622D"/>
+        <text x="110" y="260" font-family="sans-serif" font-size="9" fill="#18150F">Primary (Dark)</text>
+        <circle cx="210" cy="256" r="7" fill="none" stroke="#DDD7CD" stroke-width="1.5"/>
+        <text x="224" y="260" font-family="sans-serif" font-size="9" fill="#5C5549">Secondary (Light)</text>
+        <circle cx="340" cy="256" r="7" fill="none" stroke="#DDD7CD" stroke-width="1.5"/>
+        <text x="354" y="260" font-family="sans-serif" font-size="9" fill="#5C5549">Custom</text>
+        <text x="84" y="286" font-family="sans-serif" font-size="8" fill="#5C5549" font-weight="500">Special Instructions</text>
+        <rect x="84" y="292" width="312" height="24" rx="6" fill="#FAFAF6" stroke="#DDD7CD" stroke-width="0.8"/>
+        <text x="96" y="308" font-family="sans-serif" font-size="9" fill="#AAA">Include updated financial projections...</text>
+      </svg>
+      <div class="port-ov"><span class="port-tag">PowerApps UI</span><h3 class="port-title">Presentation Intake Form</h3><p class="port-desc">Multi-step form with progress tracking, audience targeting, and brand template selection.</p></div>
+    </div>
+
+    <!-- 9: Dark Theme Growth Viz -->
+    <div class="port-card rv d3" data-cat="viz">
+      <svg viewBox="0 0 480 340" xmlns="http://www.w3.org/2000/svg">
+        <rect width="480" height="340" fill="#18150F"/>
+        <text x="40" y="36" font-family="Georgia,serif" font-size="15" fill="#fff">Participant Growth &amp; Program Reach</text>
+        <text x="40" y="52" font-family="sans-serif" font-size="8" fill="rgba(255,255,255,0.35)">FY2021 – FY2025 · Cumulative enrollment across all sites</text>
+        <rect x="340" y="28" width="8" height="3" rx="1" fill="#B8622D"/><text x="352" y="32" font-family="sans-serif" font-size="7" fill="rgba(255,255,255,0.4)">Participants</text>
+        <rect x="400" y="28" width="8" height="3" rx="1" fill="#7A8B6F"/><text x="412" y="32" font-family="sans-serif" font-size="7" fill="rgba(255,255,255,0.4)">Sites Active</text>
+        <line x1="60" y1="80" x2="440" y2="80" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+        <line x1="60" y1="120" x2="440" y2="120" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+        <line x1="60" y1="160" x2="440" y2="160" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+        <line x1="60" y1="200" x2="440" y2="200" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+        <line x1="60" y1="240" x2="440" y2="240" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+        <text x="52" y="84" font-family="sans-serif" font-size="7" fill="rgba(255,255,255,0.2)" text-anchor="end">50K</text>
+        <text x="52" y="124" font-family="sans-serif" font-size="7" fill="rgba(255,255,255,0.2)" text-anchor="end">40K</text>
+        <text x="52" y="164" font-family="sans-serif" font-size="7" fill="rgba(255,255,255,0.2)" text-anchor="end">30K</text>
+        <text x="52" y="204" font-family="sans-serif" font-size="7" fill="rgba(255,255,255,0.2)" text-anchor="end">20K</text>
+        <text x="52" y="244" font-family="sans-serif" font-size="7" fill="rgba(255,255,255,0.2)" text-anchor="end">10K</text>
+        <defs><linearGradient id="dark-area" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#B8622D" stop-opacity="0.2"/><stop offset="100%" stop-color="#B8622D" stop-opacity="0"/></linearGradient></defs>
+        <path d="M80,230 Q140,220 200,195 T320,130 T440,85 L440,260 L80,260 Z" fill="url(#dark-area)"/>
+        <path d="M80,230 Q140,220 200,195 T320,130 T440,85" stroke="#B8622D" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M80,248 Q140,244 200,236 T320,210 T440,178" stroke="#7A8B6F" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-dasharray="4,3"/>
+        <circle cx="80" cy="230" r="4" fill="#B8622D"/><circle cx="80" cy="230" r="7" fill="#B8622D" opacity="0.15"/>
+        <circle cx="170" cy="210" r="4" fill="#B8622D"/><circle cx="170" cy="210" r="7" fill="#B8622D" opacity="0.15"/>
+        <circle cx="260" cy="170" r="4" fill="#B8622D"/><circle cx="260" cy="170" r="7" fill="#B8622D" opacity="0.15"/>
+        <circle cx="350" cy="120" r="4" fill="#B8622D"/><circle cx="350" cy="120" r="7" fill="#B8622D" opacity="0.15"/>
+        <circle cx="440" cy="85" r="5" fill="#B8622D"/><circle cx="440" cy="85" r="9" fill="#B8622D" opacity="0.15"/>
+        <line x1="60" y1="262" x2="440" y2="262" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <text x="80" y="278" font-family="sans-serif" font-size="8" fill="rgba(255,255,255,0.3)" text-anchor="middle">FY21</text>
+        <text x="170" y="278" font-family="sans-serif" font-size="8" fill="rgba(255,255,255,0.3)" text-anchor="middle">FY22</text>
+        <text x="260" y="278" font-family="sans-serif" font-size="8" fill="rgba(255,255,255,0.3)" text-anchor="middle">FY23</text>
+        <text x="350" y="278" font-family="sans-serif" font-size="8" fill="rgba(255,255,255,0.3)" text-anchor="middle">FY24</text>
+        <text x="440" y="278" font-family="sans-serif" font-size="8" fill="rgba(255,255,255,0.3)" text-anchor="middle">FY25</text>
+        <rect x="370" y="60" width="72" height="24" rx="5" fill="rgba(184,98,45,0.15)" stroke="#B8622D" stroke-width="0.6"/>
+        <text x="382" y="76" font-family="sans-serif" font-size="8.5" fill="#B8622D" font-weight="bold">48,200 ↑</text>
+        <rect x="40" y="296" width="400" height="30" rx="6" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" stroke-width="0.6"/>
+        <text x="56" y="315" font-family="sans-serif" font-size="8.5" fill="rgba(255,255,255,0.5)">Enrollment has grown 127% over 5 years, with the sharpest acceleration in FY24-25 (+38%)</text>
+      </svg>
+      <div class="port-ov"><span class="port-tag">Data Visualization</span><h3 class="port-title">5-Year Growth Trend — Dark Theme</h3><p class="port-desc">Dual-series area chart with annotated milestones for keynote presentations.</p></div>
+    </div>
+
+  </div>
+</section>
+
+<section id="process">
+  <div class="rv"><p class="section-label">How I Work</p><h2 class="section-title">From Brief to Board-Ready</h2><p class="section-desc">Every deck follows a structured process that ensures clarity, visual consistency, and on-time delivery.</p></div>
+  <div class="process-grid">
+    <div class="proc-card rv d1"><div class="proc-num">01</div><h3 class="proc-title">Intake & Discovery</h3><p class="proc-text">Understand the message, audience, and brand guidelines. Clarify what success looks like for each presentation.</p></div>
+    <div class="proc-card rv d2"><div class="proc-num">02</div><h3 class="proc-title">Structure & Story</h3><p class="proc-text">Outline the narrative arc. Sequence content so each slide builds toward a clear, persuasive conclusion.</p></div>
+    <div class="proc-card rv d3"><div class="proc-num">03</div><h3 class="proc-title">Design & Refine</h3><p class="proc-text">Apply typography, color, layout, and data visualization to elevate every slide to executive-level quality.</p></div>
+    <div class="proc-card rv d4"><div class="proc-num">04</div><h3 class="proc-title">Review & Deliver</h3><p class="proc-text">QA for consistency, brand compliance, and accessibility. Deliver polished, presentation-ready files on deadline.</p></div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="rv"><p class="section-label">Capabilities</p><h2 class="section-title">Tools & Expertise</h2><p class="section-desc">Deep specialization in presentation design tools and the broader Microsoft ecosystem.</p></div>
+  <div class="skills-cols">
+    <div class="rv d1">
+  <h4 class="skill-group-title">PRESENTATION DESIGN</h4>
+  <div class="skill-item"><span class="skill-name">PowerPoint</span></div>
+  <div class="skill-item"><span class="skill-name">Executive Reporting & Presentation Development</span></div>
+  <div class="skill-item"><span class="skill-name">Dashboard & Data Visualization</span></div>
+  <div class="skill-item"><span class="skill-name">Visual Communication</span></div>
+  <div class="skill-item"><span class="skill-name">Information Design</span></div>
+  <div class="skill-item"><span class="skill-name">Layout, Flow & Content Structure</span></div>
+</div>
+
+<div class="rv d2">
+  <h4 class="skill-group-title">DIGITAL & DATA TOOLS</h4>
+  <div class="skill-item"><span class="skill-name">Power BI</span></div>
+  <div class="skill-item"><span class="skill-name">Excel</span></div>
+  <div class="skill-item"><span class="skill-name">SharePoint Design</span></div>
+  <div class="skill-item"><span class="skill-name">HTML/CSS</span></div>
+  <div class="skill-item"><span class="skill-name">Power Apps UI</span></div>
+  <div class="skill-item"><span class="skill-name">Power Automate</span></div>
+</div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="rv"><p class="section-label">Background</p><h2 class="section-title">About Me</h2></div>
+  <div class="about-grid">
+    <div class="about-text rv d1">
+      <p>Design is how data earns attention. Over the past four years I've built a practice around making complex information look effortless — transforming raw numbers, research findings, and strategic priorities into executive-ready presentations that leadership trusts and acts on.</p>
+      <p>My work spans slide design for C-suite strategy reviews, on-brand decks for client-facing delivery, and custom PowerApps interfaces that bring internal workflows to life with clean, intuitive UI. Whether I'm managing a $170M contract portfolio through visual dashboards or designing a section-break slide with just the right typographic weight, I bring the same eye for hierarchy, clarity, and polish.</p>
+      <p>Based in Minnesota. Available for part-time and contract engagements. Fast turnarounds, zero hand-holding required.</p>
+    </div>
+    <div class="about-details rv d2">
+      <div class="about-detail"><span class="about-dlbl">Location</span><span class="about-dval">Eagan, Minnesota</span></div>
+      <div class="about-detail"><span class="about-dlbl">Availability</span><span class="about-dval">Part-Time / Contract</span></div>
+      <div class="about-detail"><span class="about-dlbl">Experience</span><span class="about-dval">4+ Years</span></div>
+      <div class="about-detail"><span class="about-dlbl">Specialty</span><span class="about-dval">Presentation Design & UI</span></div>
+      <div class="about-detail"><span class="about-dlbl">Industries</span><span class="about-dval">Nonprofit, Healthcare, Government</span></div>
+      <div class="about-detail"><span class="about-dlbl">Work Style</span><span class="about-dval">Remote, Self-Directed</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="rv"><p class="section-label">Let's Connect</p><h2 class="section-title">Ready to elevate your next presentation</h2><p class="section-desc">Open to contract and part-time opportunities in presentation design, visual communications, and UI development.</p></div>
+  <div class="cta-links rv d1">
+    <a href="mailto:KadeMHalvorson@gmail.com" class="cta-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4l-10 8L2 4"/></svg>KadeMHalvorson@gmail.com</a>
+    <a href="https://linkedin.com/in/kade-halvorson" target="_blank" class="cta-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn</a>
+  </div>
+</section>
+
+<footer><p>&copy; 2026 Kade Halvorson</p><p>Designed with intention.</p></footer>
+
+<script>
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>60)});
+document.getElementById('navToggle').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open')});
+document.querySelectorAll('.nav-links a').forEach(a=>{a.addEventListener('click',()=>document.getElementById('navLinks').classList.remove('open'))});
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis')})},{threshold:0.1,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+document.querySelectorAll('.filter-btn').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const f=btn.dataset.filter;document.querySelectorAll('.port-card').forEach(c=>{c.style.display=(f==='all'||c.dataset.cat===f)?'':'none'})})});
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',function(e){e.preventDefault();const t=document.querySelector(this.getAttribute('href'));if(t)window.scrollTo({top:t.getBoundingClientRect().top+window.scrollY-68,behavior:'smooth'})})});
+</script>
+</body>
+</html>
